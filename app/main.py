@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Response, HTTPException, status, Depends
+from fastapi import FastAPI, Response, HTTPException, status, Depends, Request, responses, Form
 from pydantic import BaseModel
 from typing import Optional
 from random import randrange
@@ -6,26 +6,25 @@ import psycopg2
 from psycopg2.extras import RealDictCursor 
 import time
 from sqlalchemy.orm import Session
-from .database import engine, session, get_db
+from .database import engine, session, get_db, BookCreatePost
+from .models import Book
 from . import models
 import os
 from dotenv import load_dotenv
+from fastapi.templating import Jinja2Templates
+from fastapi.security.utils import get_authorization_scheme_param
+from fastapi.responses import RedirectResponse
+
 
 
 load_dotenv("creds.env")
 
 models.Base.metadata.create_all(bind=engine)
 
-app = FastAPI()
+TEMPLATES = Jinja2Templates(directory="templates")
 
-class Book(BaseModel):
-    title : str
-    genre : str 
-    availability : bool = True
-    desired_genre : str
-    description : str
-    country : str
-    city : str
+
+app = FastAPI()
 
 
 while True :
@@ -36,68 +35,62 @@ while True :
         cursor = conn.cursor()
         break
 
-    except Exception as error:
+    except Exception as error:  
         print("connection de database failed ! Trying again... ")
         print(f"error : {error}")
         time.sleep(3)
 
-# select all rows in our db
-@app.get("/books")
-def get_posts():
+
+# get req for showing the add post page 
+@app.get("/join-us/add-post")
+def form_post(request: Request):
+    return TEMPLATES.TemplateResponse('add_post.html', context={'request': request})
+
+# thanks page for submitting a post
+@app.get("join-us/Thank_you")
+def redirect_post(request: Request):
+    return TEMPLATES.TemplateResponse('post_added.html', context={'request': request})
+
+
+# post req for adding a post
+@app.post("/join-us/add-post")
+def form_post(request: Request, 
+              title: str = Form(...),
+              genre: str = Form(...),
+              desired_genre : str = Form(...),
+              country : str = Form(...),
+              city : str = Form(...),
+              description: str = Form(...),
+              db: Session = Depends(get_db)):
+
+    result = Book(title=title,
+                  country=country,
+                  city = city,
+                  description=description,
+                  genre = genre, 
+                  desired_genre=desired_genre, 
+                  )
+
+    db.add(result)
+    db.commit()
+    db.refresh(result)
+    return TEMPLATES.TemplateResponse('post_added.html', context={'request': request})
+
+
+# Pgae accueil / display the books
+@app.get("/Accueil")
+async def get_posts(request:Request):
     cursor.execute("SELECT * FROM Books")
     posts = cursor.fetchall()
-    return {"message": posts}
+    return TEMPLATES.TemplateResponse(
+        "index.html",
+        {"request": request, "books": posts},
+    )
+
+# 
 
 
-# insert a post into our database
-@app.post("/books", status_code=status.HTTP_201_CREATED)
-def create_post(post : Book):
-    cursor.execute(""" INSERT INTO Books (title, genre, availability, description, desired_genre, country, city) VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING * """,
-                    (post.title, post.genre, post.availability, post.description, post.desired_genre, post.country, post.city))
-    
-    created_post = cursor.fetchone()
-    conn.commit()
-    return {"message":created_post}
 
-
-# fetch one instance with id 
-@app.get("/books/{id}")
-def get_post(id : int):
-    cursor.execute(""" SELECT * FROM Books WHERE id = %s """, str(id))
-    post = cursor.fetchone()
-    if not post : 
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='book not found :()')
-    return {f"book with id : {id}": post}   
-
-
-# delete a post with id 
-@app.delete("/books/{id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_post(id : int):
-    cursor.execute(""" DELETE FROM Books where id = %s RETURNING * """, (str(id)))
-    deleted_post = cursor.fetchone()
-    conn.commit()
-    if deleted_post == None: 
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='book to delete not found :()')
-    return {"deleted book": deleted_post}
-
-# update a postx with id : 
-@app.put("/books/{id}")
-def update_post(id : int, post: Book):
-    cursor.execute(""" UPDATE Books SET title = %s, genre = %s, availability = %s, description = %s, desired_genre = %s WHERE id = %s RETURNING *""", 
-                   (post.title, post.genre, post.availability, post.description, post.desired_genre, str(id)))
-    updated_post = cursor.fetchone()
-    conn.commit()
-
-    if updated_post == None: 
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='book to update not found :()')
-
-    return {f"updated book with id {id}" : updated_post}
-
-
-# test the orm method : 
-@app.get("/sqlalchemy")
-def get_posts(db : Session = Depends(get_db)):
-    return {"status":"success"}
 
 
 
