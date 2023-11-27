@@ -17,4 +17,3 @@ class Book(Base) :
     availability = Column(Boolean, nullable=False, server_default='TRUE')
     desired_genre = Column(String, server_default='Surprise')
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default= text('now()'))
-

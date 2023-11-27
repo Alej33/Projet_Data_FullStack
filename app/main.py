@@ -87,8 +87,6 @@ async def get_posts(request:Request):
         {"request": request, "books": posts},
     )
 
-# 
-
 
 
 

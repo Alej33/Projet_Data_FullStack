@@ -7,41 +7,18 @@
     <section class="bg-black">
       <div class="container px-5 py-12 mx-auto lg:px-20">
         <div class="mb-8 text-white">
-          <div class="flex justify-between items-center">
-            <div>
-              <button class="text-white px-4 py-2 border border-gray-900 rounded-lg bg-green-500">
-                Join Us
-              </button>
-            </div>
-            <div class="text-white">
-              <h1 class="text-3xl font-medium mb-4">
-                Trade the Pages, Share the Knowledge
-              </h1>
-              <p class="text-base leading-relaxed">
-                Latest posts...
-              </p>
-            </div>
-            <div>
-              <div class="flex items-center">
-                <input type="text" placeholder="Search..." class="bg-gray-800 text-white px-4 py-2 rounded-md mr-2 focus:outline-none">
-                <select class="bg-gray-800 text-white px-4 py-2 rounded-md focus:outline-none">
-                  <option value="" selected disabled>Category</option>
-                  <!-- Add your book categories as options -->
-                  <option value="comedy">Comedy</option>
-                  <option value="romance">Romance</option>
-                  <option value="drama">Drama</option>
-                  <option value="action">Action</option>
-                  <option value="science_fiction">Science Fiction</option>
-                  <option value="thriller">Thriller</option>
-                  <option value="fantasy">Fantasy</option>
-                  <option value="history">History</option>
-                  <option value="horror">Horror</option>
-                  <option value="children_book">Children book</option>
-
-                </select>
-                <button class="bg-gray-800 text-white px-4 py-2 rounded-md ml-2 ">Search</button>
-              </div>
-            </div>
+          <div class="text-white">  
+            <h1 class="text-3xl font-medium mb-4">
+              Trade the Pages, Share the Knowledge
+            </h1>
+            <p class="text-base leading-relaxed">
+              Latest posts...
+            </p>
+          </div>
+          <div class="flex justify-end">
+            <button class="text-white px-4 py-2 border border-gray-900 rounded-lg bg-green-500", onclick="window.location.href = '/join-us/add-post'">
+              Join Us
+            </button>
           </div>
         </div>
         {% for book in books %}
