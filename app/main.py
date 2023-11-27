@@ -6,9 +6,9 @@ import psycopg2
 from psycopg2.extras import RealDictCursor 
 import time
 from sqlalchemy.orm import Session
-from .database import engine, session, get_db, BookCreatePost
-from .models import Book
-from . import models
+from database import engine, session, get_db, BookCreatePost
+from models import Book
+import models
 import os
 from dotenv import load_dotenv
 from fastapi.templating import Jinja2Templates
