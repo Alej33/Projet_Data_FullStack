@@ -11,7 +11,6 @@ from .models import Book
 from . import models
 import os
 from dotenv import load_dotenv
-from fastapi.templating import Jinja2Templates
 from fastapi.security.utils import get_authorization_scheme_param
 from fastapi.responses import RedirectResponse
 
@@ -21,7 +20,6 @@ load_dotenv("creds.env")
 
 models.Base.metadata.create_all(bind=engine)
 
-TEMPLATES = Jinja2Templates(directory="templates")
 
 
 app = FastAPI()
@@ -41,53 +39,28 @@ while True :
         time.sleep(3)
 
 
-# get req for showing the add post page 
-@app.get("/join-us/add-post")
-def form_post(request: Request):
-    return TEMPLATES.TemplateResponse('add_post.html', context={'request': request})
+@app.get("/books", response_model=List[Book])
+def get_books(db: Session = Depends(get_db)):
+    books = db.query(Book).all()
+    return books
 
-# thanks page for submitting a post
-@app.get("join-us/Thank_you")
-def redirect_post(request: Request):
-    return TEMPLATES.TemplateResponse('post_added.html', context={'request': request})
-
-
-# post req for adding a post
-@app.post("/join-us/add-post")
-def form_post(request: Request, 
-              title: str = Form(...),
-              genre: str = Form(...),
-              desired_genre : str = Form(...),
-              country : str = Form(...),
-              city : str = Form(...),
-              description: str = Form(...),
-              db: Session = Depends(get_db)):
-
-    result = Book(title=title,
-                  country=country,
-                  city = city,
-                  description=description,
-                  genre = genre, 
-                  desired_genre=desired_genre, 
-                  )
-
-    db.add(result)
+@app.post("/join-us/add-post", status_code=status.HTTP_201_CREATED)
+def add_book(title: str = Form(...), 
+             genre: str = Form(...),
+             desired_genre: str = Form(...),
+             country: str = Form(...),
+             city: str = Form(...),
+             description: str = Form(...),
+             db: Session = Depends(get_db)):
+    # Create a new book instance
+    new_book = Book(title=title, genre=genre, desired_genre=desired_genre, 
+                    country=country, city=city, description=description)
+    # Add to the database
+    db.add(new_book)
     db.commit()
-    db.refresh(result)
-    return TEMPLATES.TemplateResponse('post_added.html', context={'request': request})
+    db.refresh(new_book)
+    return {"message": "Book added successfully", "book": new_book}
 
-
-# Pgae accueil / display the books
-@app.get("/Accueil")
-async def get_posts(request:Request):
-    cursor.execute("SELECT * FROM Books")
-    posts = cursor.fetchall()
-    return TEMPLATES.TemplateResponse(
-        "index.html",
-        {"request": request, "books": posts},
-    )
-
-# 
 
 
 
