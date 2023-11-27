@@ -6,7 +6,7 @@ from typing import Optional, List
 from dotenv import load_dotenv
 import os
 
-load_dotenv("creds.env")
+load_dotenv(".env")
 
 
 # structure of the url : postgresql://<username>:<password>/<ip-adress/hostname>/<database-name>

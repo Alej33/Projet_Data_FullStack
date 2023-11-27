@@ -17,7 +17,7 @@ from fastapi.responses import RedirectResponse
 
 
 
-load_dotenv("creds.env")
+load_dotenv(".env")
 
 models.Base.metadata.create_all(bind=engine)
 
