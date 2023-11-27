@@ -3,10 +3,15 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from fastapi import Request
 from typing import Optional, List
+from dotenv import load_dotenv
+import os
+
+load_dotenv("creds.env")
+
 
 # structure of the url : postgresql://<username>:<password>/<ip-adress/hostname>/<database-name>
 
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres:Youyoude12@localhost/fastapi"
+SQLALCHEMY_DATABASE_URL = f"postgresql://{os.environ.get('USER')}:{os.environ.get('PASSWORD')}@localhost/fastapi"
 
 engine = create_engine(url = SQLALCHEMY_DATABASE_URL)
 
