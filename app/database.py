@@ -10,8 +10,9 @@ load_dotenv(".env")
 
 
 # structure of the url : postgresql://<username>:<password>/<ip-adress/hostname>/<database-name>
+port, server_name = 5433, 'postgres_books' 
 
-SQLALCHEMY_DATABASE_URL = f"postgresql://{os.environ.get('USER')}:{os.environ.get('PASSWORD')}@localhost/fastapi"
+SQLALCHEMY_DATABASE_URL = f"postgresql://{os.environ.get('USER')}:{os.environ.get('PASSWORD')}@localhost:{port}/{server_name}"
 
 engine = create_engine(url = SQLALCHEMY_DATABASE_URL)
 
