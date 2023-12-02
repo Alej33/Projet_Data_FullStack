@@ -46,7 +46,7 @@ while True :
 
 # get req for showing the add post page 
 @app.get("/join-us/add-post")
-def form_post(request: Request):
+def form_post(request: Request) :
     return TEMPLATES.TemplateResponse('add_post.html', context={'request': request})
 
 # thanks page for submitting a post
@@ -126,4 +126,13 @@ async def filter_results(request:Request,
     return TEMPLATES.TemplateResponse(
         "index.html",
         context={"request": request, "books": posts}
+    )
+
+
+
+@app.get("/login")
+async def login(request:Request):
+    return TEMPLATES.TemplateResponse(
+        "login.html",
+        context={"request": request}
     )
