@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User's Personal Page</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: right;
+        }
+
+        nav {
+            float: right;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #555;
+        }
+
+        .dropdown {
+            display: inline-block;
+            position: relative;
+        }
+
+        .dropdown button {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 10px;
+            display: block;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        section {
+            margin: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, h3 {
+            color: #333;
+        }
+
+        p {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <div class="dropdown">
+                <button>Messages</button>
+                <div class="dropdown-content">
+                    
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section>
+        <h1>User's Info</h1>
+        <p><strong>Name:</strong> John Doe</p>
+        <p><strong>Location:</strong> City, Country</p>
+    </section>
+
+    <section>
+        <h2>Posts</h2>
+        <head>
+            <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+        </head>
+        <body> 
+            <section class="bg-black">
+              <div class="container px-5 py-12 mx-auto lg:px-20">
+                {% for book in books %}
+                <div class="flex flex-wrap items-end justify-start w-full transition duration-500 ease-in-out transform bg-black border-2 border-gray-600 rounded-lg hover:border-white mb-8">
+                  <div class="w-full xl:w-1/4 md:w-1/4">
+                    <div class="relative flex flex-col h-full p-8">
+                      <h2 class="mb-4 font-semibold tracking-widest text-white uppercase title-font">
+                        {{book.title}}
+                      </h2>
+                      <p class="flex items-center mb-2 text-lg font-normal tracking-wide text-white">
+                        <span class="inline-flex items-center justify-center flex-shrink-0 w-5 h-5 mr-2 text-white rounded-full bg-blue-1300">
+                          <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" class="w-4 h-4" viewBox="0 0 24 24">
+                            <path d="M20 6L9 17l-5-5"></path>
+                          </svg>
+                        </span>{{book.genre}}
+                      </p>
+                      <h2 class="mb-4 font-semibold tracking-widest text-white uppercase title-font">
+                        {{book.description}}
+                      </h2>
+                    </div>
+                  </div>
+                  <div class="w-full xl:w-1/4 md:w-1/4 lg:ml-auto">
+                    <div class="relative flex flex-col h-full p-8">
+                      <h1 class="flex items-end mx-auto text-3xl font-black leading-none text-white">
+                        <span>View Book </span>
+                      </h1>
+                      <button class="w-full px-4 py-2 mx-auto mt-3 text-white transition duration-500 ease-in-out transform border border-gray-900 rounded-lg text-md hover:bg-gray-900 focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 focus:border-gray-700 focus:bg-gray-800">
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </section>
+          </body>
+    </section>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen">
+
+    <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden w-96">
+        <div class="bg-gray-700 text-white text-center py-3">
+            <h2 class="text-lg font-bold">Login</h2>
+        </div>
+        <div class="p-4">
+            <form action="#" method="post">
+                <div class="mb-4">
+                    <label for="username" class="block text-sm font-semibold">Username:</label>
+                    <input type="text" id="username" name="username" required
+                        class="w-full p-2 bg-gray-700 border border-gray-600 rounded mt-1">
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="block text-sm font-semibold">Password:</label>
+                    <input type="password" id="password" name="password" required
+                        class="w-full p-2 bg-gray-700 border border-gray-600 rounded mt-1">
+                </div>
+                <div class="mb-4">
+                    <button type="submit"
+                        class="w-full bg-green-500 text-white p-2 rounded cursor-pointer hover:bg-green-600">Login</button>
+                </div>
+                <div class="text-center">
+                    <p class="text-gray-400">Don't have an account? <a href="#" class="text-gray-300">Register
+                            here</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>
