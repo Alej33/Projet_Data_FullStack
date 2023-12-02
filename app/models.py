@@ -1,5 +1,5 @@
 from .database import Base
-from sqlalchemy import Integer, String, Column, Boolean
+from sqlalchemy import Integer, String, Column, Boolean, LargeBinary
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 from sqlalchemy.sql.expression import text
 
@@ -17,3 +17,4 @@ class Book(Base) :
     availability = Column(Boolean, nullable=False, server_default='TRUE')
     desired_genre = Column(String, server_default='Surprise')
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default= text('now()'))
+    image = Column(String)
