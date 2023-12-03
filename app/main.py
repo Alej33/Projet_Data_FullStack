@@ -8,13 +8,16 @@ from psycopg2.extras import RealDictCursor
 import time
 from sqlalchemy.orm import Session
 from database import engine, session, get_db
-from models import Book, Utilisateur
+from models import Book,Messages
 import models
 import os
 from dotenv import load_dotenv
 from fastapi.templating import Jinja2Templates
 from fastapi.security.utils import get_authorization_scheme_param
 from fastapi.responses import RedirectResponse
+import bcrypt
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 
@@ -87,13 +90,14 @@ def form_post(request: Request,
 
 
 # Let's add the user's page
-@app.get("/user")
-async def show_user(request:Request):
-    cursor.execute("SELECT * FROM Books")
+@app.get("/user/{email}")
+async def show_user(request:Request, email:str):
+    query = f"SELECT * FROM messages WHERE receiver_email = '{email}'"
+    cursor.execute(query)
     posts = cursor.fetchall()
     return TEMPLATES.TemplateResponse(
         "user.html",
-        {"request": request, "books":posts},
+        {"request": request, "messages":posts}
     )
 
 
@@ -144,3 +148,72 @@ async def login(request:Request):
         "signup.html",
         context={"request": request}
     )
+
+
+@app.post("/{book_id}")
+def send_message(request:Request, book_id: int, email: str = Form(...), message: str = Form(...), db: Session = Depends(get_db)):
+    # Get the book's email and other details from the database
+    book = db.query(Book).filter(Book.id == book_id).first()
+
+    if not book:
+        raise HTTPException(status_code=404, detail="Book not found")
+
+    # Create a new message
+    new_message = Messages(receiver_email=book.email, sender_email=email, message=message)
+
+    # Add the message to the database
+    db.add(new_message)
+    db.commit()
+    db.refresh(new_message)
+
+    return TEMPLATES.TemplateResponse('post_added.html', context={"request":request})
+
+@app.get("/messages")
+def get_all_messages(request:Request, db: Session = Depends(get_db)):
+    messages = db.query(Messages).all()
+    return TEMPLATES.TemplateResponse("messages.html", context={"request": request, "messages": messages})
+
+@app.get("/message_sent")
+def notif(request:Request):
+    return TEMPLATES.TemplateResponse("message_sent.html", context={"request": request})
+
+
+@app.get("/login")
+async def login(request:Request):
+    return TEMPLATES.TemplateResponse(
+        "login.html",
+        context={"request": request}
+    )
+
+@app.post("/login")
+async def login_user(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    user = db.query(models.Utilisateur).filter(models.Utilisateur.email == form_data.username).first()
+    if not user or not bcrypt.checkpw(form_data.password.encode('utf-8'), user.password_hash):
+        raise HTTPException(status_code=400, detail="Incorrect username or password")
+
+    response = RedirectResponse(url=f"/user/{user.email}", status_code=303)
+    return response
+
+@app.get("/register")
+async def login(request:Request):
+    return TEMPLATES.TemplateResponse(
+        "signup.html",
+        context={"request": request}
+    )
+
+@app.post("/register")
+async def register_user(
+    request: Request, 
+    email: str = Form(...), 
+    password: str = Form(...),
+    nom: str = Form(...),
+    country: str = Form(...),
+    db: Session = Depends(get_db)
+):
+
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+    new_user = models.Utilisateur(email=email, nom=nom, country=country, password_hash=hashed_password, password_salt=salt)
+    db.add(new_user)
+    db.commit()
+    return {"message": "User created successfully"}

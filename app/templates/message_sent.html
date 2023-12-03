@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Sent</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Add your custom styles if needed -->
+</head>
+
+<body class="bg-black text-white text-center h-screen flex flex-col justify-center">
+    <h1 class="text-4xl font-bold mb-4">Message Sent Successfully!</h1>
+    <p class="text-lg">You will be redirected shortly...</p>
+    <script>
+        setTimeout(function () {
+            window.location.href = '/';
+        }, 2000); // Redirect to home page after 2 seconds
+    </script>
+</body>
+
+</html>

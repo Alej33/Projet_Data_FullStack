@@ -21,36 +21,25 @@
             <h2 class="text-lg font-bold">Register</h2>
         </div>
         <div class="p-4">
-            <form action="#" method="post">
+            <form action="/register" method="post">
                 <div class="mb-4">
-                    <label for="username" class="block text-sm font-semibold">Email:</label>
-                    <input type="text" id="username" name="username" required
-                        class="w-full p-2 bg-gray-700 border border-gray-600 rounded mt-1">
+                    <label for="nom" class="block text-sm font-semibold">Name:</label>
+                    <input type="text" id="nom" name="nom" required class="w-full p-2 bg-gray-700 border border-gray-600 rounded mt-1">
+                </div>
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-semibold">Email:</label>
+                    <input type="email" id="email" name="email" required class="w-full p-2 bg-gray-700 border border-gray-600 rounded mt-1">
+                </div>
+                <div class="mb-4">
+                    <label for="country" class="block text-sm font-semibold">Country:</label>
+                    <input type="text" id="country" name="country" required class="w-full p-2 bg-gray-700 border border-gray-600 rounded mt-1">
                 </div>
                 <div class="mb-4">
                     <label for="password" class="block text-sm font-semibold">Password:</label>
-                    <input type="password" id="password" name="password" required
-                        class="w-full p-2 bg-gray-700 border border-gray-600 rounded mt-1">
+                    <input type="password" id="password" name="password" required class="w-full p-2 bg-gray-700 border border-gray-600 rounded mt-1">
                 </div>
                 <div class="mb-4">
-                    <label for="password" class="block text-sm font-semibold">Username:</label>
-                    <input type="password" id="password" name="password" required
-                        class="w-full p-2 bg-gray-700 border border-gray-600 rounded mt-1">
-                </div>
-                <div class="mb-4">
-                    <label for="username" class="block text-sm font-semibold">Country, City</label>
-                    <input type="text" id="username" name="username" required
-                        class="w-full p-2 bg-gray-700 border border-gray-600 rounded mt-1">
-                </div>
-                
-
-                <div class="mb-4">
-                    <button type="submit"
-                        class="w-full bg-green-500 text-white p-2 rounded cursor-pointer hover:bg-green-600">Register</button>
-                </div>
-                <div class="text-center">
-                    <p class="text-gray-400">You already have an account? <a href="/login" class="text-gray-300">Log in
-                            here</a></p>
+                    <button type="submit" class="w-full bg-green-500 text-white p-2 rounded cursor-pointer hover:bg-green-600">Register</button>
                 </div>
             </form>
         </div>

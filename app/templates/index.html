@@ -81,13 +81,12 @@
       <!-- Stylish User Profile and Exchange Buttons on the right -->
       <div class="flex items-center space-x-4 ml-auto pr-5">
         <div class="dropdown">
-          <button class="text-white px-4 py-2 border border-gray-900 rounded-lg bg-green-500 hover:bg-green-600" style="font-weight: bold;" onclick="window.location.href = '/user'">
+          <button class="text-white px-4 py-2 border border-gray-900 rounded-lg bg-green-500 hover:bg-green-600" style="font-weight: bold;" onclick="window.location.href = '/login'">
             Profile 
           </button>
           <div class="dropdown-content">
-            <a href="/user">My account</a>
-            <a href="/join-us/add-post">Exchange</a>
-            <a href="#">Log out</a>
+            <a href="/login">My account</a>
+            <a href="/join-us/add-post">Exchange a book</a>
           </div>
         </div>
         <button class="text-white px-4 py-2 border border-gray-900 rounded-lg bg-green-500 hover:bg-green-600" style="font-weight: bold;" onclick="window.location.href = '/login'">
@@ -164,15 +163,21 @@
 
           <!-- Write your message area and Submit button -->
           <div class="mb-4">
-            <form onsubmit="submitMessage(event, '{{ book.id }}')">
-              <!-- Email Input -->
+            <form onsubmit="submitMessage(event, '{{ book.id }}', '{{ book.email }}')">
+              <!-- Email Input for sender's email -->
               <input type="email" name="email" placeholder="Your email" class="block border rounded w-full px-4 py-3 mb-2" required>
-          
+              
               <!-- Message Textarea -->
               <textarea name="message" placeholder="Write your message..." class="block border rounded w-full h-40 px-4 py-3 mb-2 resize-none" required></textarea>
-          
+              
               <!-- Submit Button -->
-              <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Send to owner</button>
+              <div id="messageContainer"></div>
+              <!-- Update your button to call the sendMessage function -->
+              <button type="button" onclick="sendMessage('{{ book.id }}', '{{ book.email }}'); window.location.href = '/message_sent'" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Send to owner</button>
+              
+              
+
+
             </form>
           </div>
         </div>
@@ -189,12 +194,49 @@
   {% endfor %}
 
       <script>
-        function convert_binary_to_base64(binaryData) {
-      const bytes = new Uint8Array(binaryData);
-      let binary = '';
-      bytes.forEach(byte => binary += String.fromCharCode(byte));
-      return btoa(binary);
-  }
+         function sendMessage(bookId) {
+        // Get email and message from the form
+        var emailInput = document.querySelector('input[name="email"]');
+        var messageInput = document.querySelector('textarea[name="message"]');
+
+        // Check if email and message are not empty
+        if (!emailInput.value || !messageInput.value) {
+            // Display an error message (you can customize this part)
+            alert('Please fill in both email and message fields.');
+            return;
+        }
+
+        // Prepare the data for the POST request
+        var data = new FormData();
+        data.append('email', emailInput.value);
+        data.append('message', messageInput.value);
+
+        // Make a POST request to the FastAPI endpoint
+        fetch(`/${bookId}`, {
+            method: 'POST',
+            body: data,
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); // Handle the response as needed
+
+                // Check if the response indicates success
+                if (data.success) {
+                    // Display a success message (you can customize this part)
+                    alert('Message has been sent successfully!');
+                    // Optionally, reset the form or perform any other actions
+
+                } else {
+                    // Display an error message (you can customize this part)
+                    alert('Error sending message. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Display an error message (you can customize this part)
+                alert('Error sending message. Please try again.');
+            });
+    }
 
   // JavaScript code for calculating and displaying time difference for each post
   var timeAgoElements = document.querySelectorAll('.timeAgo');

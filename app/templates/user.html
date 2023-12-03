@@ -183,6 +183,19 @@
         .user-location {
             color: #ccc; /* Lighter text color */
         }
+        .message-container {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .message-container:hover {
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
@@ -217,36 +230,17 @@
         </section>
 
         <section class="post-container">
-          My posts : 
-            {% for book in books %}
-                <div class="flex flex-wrap items-start justify-start w-full transition duration-500 ease-in-out transform bg-gray-800 border-2 border-gray-600 rounded-lg hover:border-white mb-8 shadow-md relative book-card">
-                    <div class="w-full xl:w-1/4 md:w-1/4 lg:w-1/5">
-                        <div class="relative flex flex-col h-full p-8">
-                            <img src="data:image/png;base64,{{ book.image }}" alt="Book Cover" class="book-image">
-                        </div>
+            <!-- Display messages instead of books -->
+            <h2 class="text-3xl font-medium mb-4">My Messages</h2>
+            <div>
+                {% for message in messages %}
+                    <!-- Message container -->
+                    <div class="message-container">
+                        <strong>Sender:</strong> {{ message.sender_email }}<br>
+                        <strong>Message:</strong> {{ message.message }}
                     </div>
-                    <div class="w-full xl:w-1/2 md:w-1/2 lg:w-3/5 xl:pr-6 md:pr-6">
-                        <div class="relative flex flex-col h-full p-8 book-details">
-                            <h2 class="mb-4 font-semibold tracking-widest text-white uppercase text-2xl">
-                                {{ book.title }}
-                            </h2>
-                            <p class="mb-2 text-lg font-normal text-gray-300">
-                                Genre : {{ book.genre }}
-                            </p>
-                            <p class="mb-4 text-sm text-gray-400">
-                                {{ book.description }}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="w-48 xl:w-1/4 md:w-1/4 lg:w-1/5 xl:pl-6 md:pl-6 lg:pl-4 ml-auto">
-                        <div class="relative flex flex-col h-full p-8">
-                            <h1 class="flex items-end text-2xl font-black leading-none text-white mb-4">
-                                <span class="timeAgo" data-created="{{ book.created_at.isoformat() }}"></span>
-                            </h1>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
         </section>
 
     </div>
