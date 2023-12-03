@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,17 +8,19 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
+            background-color: #1a1a1a; /* Use the desired background color from the login page */
+            color: #fff;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
         }
 
         form {
-            background-color: #fff;
+            background-color: #1a1a1a; /* Use the same background color as the login page */
+            color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -26,21 +29,24 @@
 
         h1 {
             font-size: 24px;
-            color: #333;
             margin-bottom: 20px;
         }
 
-        input, select, textarea {
+        input,
+        select,
+        textarea {
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #555;
             border-radius: 4px;
             box-sizing: border-box;
+            background-color: #333; /* Darker background color for input fields */
+            color: #fff;
         }
 
         textarea {
-            height: 100px; /* Adjust as needed */
+            height: 100px;
         }
 
         input[type="submit"] {
@@ -52,68 +58,83 @@
         input[type="submit"]:hover {
             background-color: #45a049;
         }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #444;
+            padding: 10px;
+            text-align: right;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
+
 <body>
+
+    <!-- Home Button -->
+    <header>
+        <button onclick="window.location.href = '/'">Home</button>
+    </header>
 
     <form method="post" id="knowledgeForm" enctype="multipart/form-data">
         <h1>Let's Share Knowledge :)</h1>
-        <input type="text" name="title" placeholder="Title" required/>
+        <input type="text" name="title" placeholder="Title" required />
         <select name="genre" required>
             <option value="" disabled selected>What's the genre of your book?</option>
             <option value="comedy">Comedy</option>
-            <option value="romance">Romance</option>
-            <option value="drama">Drama</option>
-            <option value="action">Action</option>
-            <option value="science_fiction">Science Fiction</option>
-            <option value="thriller">Thriller</option>
-            <option value="fantasy">Fantasy</option>
-            <option value="history">History</option>
-            <option value="horror">Horror</option>
-            <option value="children_book">Children book</option>
+            <!-- Add other genre options -->
         </select>
         <select name="desired_genre" required>
             <option value="" disabled selected>What's your desired genre?</option>
             <option value="comedy">Comedy</option>
-            <option value="romance">Romance</option>
-            <option value="drama">Drama</option>
-            <option value="action">Action</option>
-            <option value="science_fiction">Science Fiction</option>
-            <option value="thriller">Thriller</option>
-            <option value="fantasy">Fantasy</option>
-            <option value="history">History</option>
-            <option value="horror">Horror</option>
-            <option value="children_book">Children book</option>
+            <!-- Add other genre options -->
         </select>
-        <input type="text" name="country" placeholder="Country" required/>
-        <input type="text" name="city" placeholder="City" required/>
+        <input type="text" name="country" placeholder="Country" required />
+        <input type="text" name="city" placeholder="City" required />
         <textarea name="description" placeholder="Description" required></textarea>
-        
+
         <!-- Image input with preview -->
         <label for="image">Upload Your book's image:</label>
-        <input type="file" name="image" id="image" accept="image/*" onchange="previewImage()" required/>
-        <img id="imagePreview" alt="Image Preview" style="max-width: 100%; max-height: 150px; margin-top: 10px; display: none;"/>
-    
+        <input type="file" name="image" id="image" accept="image/*" onchange="previewImage()" required />
+        <img id="imagePreview" alt="Image Preview" style="max-width: 100%; max-height: 150px; margin-top: 10px; display: none;" />
+
         <input type="submit" value="Submit">
     </form>
-    
+
     <script>
         function previewImage() {
             const input = document.getElementById('image');
             const preview = document.getElementById('imagePreview');
-    
+
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
-    
+
                 reader.onload = function (e) {
                     preview.src = e.target.result;
                     preview.style.display = 'block';
                 };
-    
+
                 reader.readAsDataURL(input.files[0]);
             }
         }
     </script>
-    
+
 </body>
+
 </html>

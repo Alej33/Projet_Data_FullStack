@@ -8,9 +8,17 @@
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
-<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen">
+<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen">
 
-    <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden w-96">
+    <!-- Header Section -->
+    <header class="bg-gray-900 py-4 w-full fixed top-0 flex justify-end pr-4">
+        <button class="text-white px-4 py-2 border border-gray-900 rounded-lg bg-green-500 hover:bg-green-600"
+            style="font-weight: bold;" onclick="window.location.href = '/'">
+            Home
+        </button>
+    </header>
+
+    <div class="bg-gray-800 rounded-lg shadow-md overflow-hidden w-96 mt-16">
         <div class="bg-gray-700 text-white text-center py-3">
             <h2 class="text-lg font-bold">Login</h2>
         </div>
@@ -31,8 +39,8 @@
                         class="w-full bg-green-500 text-white p-2 rounded cursor-pointer hover:bg-green-600">Login</button>
                 </div>
                 <div class="text-center">
-                    <p class="text-gray-400">Don't have an account? <a href="#" class="text-gray-300">Register
-                            here</a></p>
+                    <p class="text-gray-400">Don't have an account? <a href="/register"
+                            class="text-gray-300">Register here</a></p>
                 </div>
             </form>
         </div>

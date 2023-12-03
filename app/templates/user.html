@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User's Personal Page</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #1a1a1a; /* Dark background color */
+            color: #fff; /* Text color */
         }
 
         header {
@@ -51,7 +53,7 @@
         .dropdown-content {
             display: none;
             position: absolute;
-            background-color: #f9f9f9;
+            background-color: #1a1a1a;
             box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
             z-index: 1;
             border-radius: 4px;
@@ -59,7 +61,7 @@
         }
 
         .dropdown-content a {
-            color: #333;
+            color: #fff;
             padding: 10px;
             display: block;
             text-decoration: none;
@@ -67,93 +69,187 @@
         }
 
         .dropdown-content a:hover {
-            background-color: #ddd;
+            background-color: #555;
         }
 
         .dropdown:hover .dropdown-content {
             display: block;
         }
 
+        .container {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
         section {
+            flex: 1;
             margin: 20px;
-            background-color: #fff;
+            background-color: #333; /* Dark background color */
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         h1, h2, h3 {
-            color: #333;
+            color: #fff;
         }
 
         p {
-            color: #555;
+            color: #ccc; /* Lighter text color */
+        }
+
+        /* Additional Styling for Posts Section */
+        .post-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .book-card {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .book-card:hover {
+            transform: scale(1.05);
+        }
+
+        .book-image {
+            max-width: 100%;
+            max-height: 150px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .book-details {
+            padding: 20px;
+        }
+
+        .contact-button {
+            background-color: #27ae60;
+            color: #ecf0f1;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .contact-button:hover {
+            background-color: #219653;
+        }
+
+        .timeAgo {
+            color: #7f8c8d;
+        }
+
+        /* Styling for User Info */
+        .user-info {
+            text-align: center;
+            border-radius: 8px;
+            background-color: #333; /* Dark background color */
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .user-image {
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .user-image img {
+            width: 100%;
+            height: auto;
+        }
+
+        .user-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .user-mail {
+            color: #ccc; /* Lighter text color */
+        }
+
+        .user-location {
+            color: #ccc; /* Lighter text color */
         }
     </style>
 </head>
 <body>
 
     <header>
-        <nav>
-            <a href="#">Home</a>
-            <a href="#">About</a>
-            <div class="dropdown">
-                <button>Messages</button>
-                <div class="dropdown-content">
-                    
-                </div>
-            </div>
-        </nav>
+      <div class="container mx-auto flex items-center justify-between">
+        <!-- Logo or site name can be added here if needed -->
+  
+        <!-- Stylish User Profile and Exchange Buttons on the right -->
+        <div class="flex items-center space-x-4 ml-auto pr-5">
+            <button class="text-white px-4 py-2 border border-gray-900 rounded-lg bg-green-500 hover:bg-green-600" style="font-weight: bold;" onclick="window.location.href = '/'">
+              Home 
+            </button>
+          <button class="text-white px-4 py-2 border border-gray-900 rounded-lg bg-green-500 hover:bg-green-600" style="font-weight: bold;">
+            Messages 
+          </button>
+        </div>
+      </div>
     </header>
 
-    <section>
-        <h1>User's Info</h1>
-        <p><strong>Name:</strong> John Doe</p>
-        <p><strong>Location:</strong> City, Country</p>
-    </section>
+    <div class="container">
 
-    <section>
-        <h2>Posts</h2>
-        <head>
-            <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-        </head>
-        <body> 
-            <section class="bg-black">
-              <div class="container px-5 py-12 mx-auto lg:px-20">
-                {% for book in books %}
-                <div class="flex flex-wrap items-end justify-start w-full transition duration-500 ease-in-out transform bg-black border-2 border-gray-600 rounded-lg hover:border-white mb-8">
-                  <div class="w-full xl:w-1/4 md:w-1/4">
-                    <div class="relative flex flex-col h-full p-8">
-                      <h2 class="mb-4 font-semibold tracking-widest text-white uppercase title-font">
-                        {{book.title}}
-                      </h2>
-                      <p class="flex items-center mb-2 text-lg font-normal tracking-wide text-white">
-                        <span class="inline-flex items-center justify-center flex-shrink-0 w-5 h-5 mr-2 text-white rounded-full bg-blue-1300">
-                          <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" class="w-4 h-4" viewBox="0 0 24 24">
-                            <path d="M20 6L9 17l-5-5"></path>
-                          </svg>
-                        </span>{{book.genre}}
-                      </p>
-                      <h2 class="mb-4 font-semibold tracking-widest text-white uppercase title-font">
-                        {{book.description}}
-                      </h2>
+        <section class="user-info">
+            <div class="user-image">
+                <img src="https://ontario.coop/sites/default/files/default_images/person_2.jpg" alt="Anonymous User">
+            </div>
+            <div class="user-details">
+                <div class="user-name">Mohamed Amine Taif</div>
+                <div class="user-mail">aminetaifat528@gmail.com</div>
+                <div class="user-location">Paris, France</div>
+            </div>  
+        </section>
+
+        <section class="post-container">
+          My posts : 
+            {% for book in books %}
+                <div class="flex flex-wrap items-start justify-start w-full transition duration-500 ease-in-out transform bg-gray-800 border-2 border-gray-600 rounded-lg hover:border-white mb-8 shadow-md relative book-card">
+                    <div class="w-full xl:w-1/4 md:w-1/4 lg:w-1/5">
+                        <div class="relative flex flex-col h-full p-8">
+                            <img src="data:image/png;base64,{{ book.image }}" alt="Book Cover" class="book-image">
+                        </div>
                     </div>
-                  </div>
-                  <div class="w-full xl:w-1/4 md:w-1/4 lg:ml-auto">
-                    <div class="relative flex flex-col h-full p-8">
-                      <h1 class="flex items-end mx-auto text-3xl font-black leading-none text-white">
-                        <span>View Book </span>
-                      </h1>
-                      <button class="w-full px-4 py-2 mx-auto mt-3 text-white transition duration-500 ease-in-out transform border border-gray-900 rounded-lg text-md hover:bg-gray-900 focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 focus:border-gray-700 focus:bg-gray-800">
-                      </button>
+                    <div class="w-full xl:w-1/2 md:w-1/2 lg:w-3/5 xl:pr-6 md:pr-6">
+                        <div class="relative flex flex-col h-full p-8 book-details">
+                            <h2 class="mb-4 font-semibold tracking-widest text-white uppercase text-2xl">
+                                {{ book.title }}
+                            </h2>
+                            <p class="mb-2 text-lg font-normal text-gray-300">
+                                Genre : {{ book.genre }}
+                            </p>
+                            <p class="mb-4 text-sm text-gray-400">
+                                {{ book.description }}
+                            </p>
+                        </div>
                     </div>
-                  </div>
+                    <div class="w-48 xl:w-1/4 md:w-1/4 lg:w-1/5 xl:pl-6 md:pl-6 lg:pl-4 ml-auto">
+                        <div class="relative flex flex-col h-full p-8">
+                            <h1 class="flex items-end text-2xl font-black leading-none text-white mb-4">
+                                <span class="timeAgo" data-created="{{ book.created_at.isoformat() }}"></span>
+                            </h1>
+                        </div>
+                    </div>
                 </div>
-                {% endfor %}
-              </div>
-            </section>
-          </body>
-    </section>
+            {% endfor %}
+        </section>
+
+    </div>
 
 </body>
 </html>

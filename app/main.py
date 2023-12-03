@@ -68,7 +68,6 @@ def form_post(request: Request,
               db: Session = Depends(get_db)):
 
     image_data = base64.b64encode((image.file.read())).decode("utf-8") if image else None
-    print(image_data)
 
     result = Book(title=title,
                   country=country,
@@ -97,7 +96,7 @@ async def show_user(request:Request):
 
 
 # Displaying results w filters : 
-@app.get("/Accueil")
+@app.get("/")
 async def filter_results(request:Request, 
                          genre: str = None, 
                          timeAdded : str = None):
@@ -134,5 +133,12 @@ async def filter_results(request:Request,
 async def login(request:Request):
     return TEMPLATES.TemplateResponse(
         "login.html",
+        context={"request": request}
+    )
+
+@app.get("/register")
+async def login(request:Request):
+    return TEMPLATES.TemplateResponse(
+        "signup.html",
         context={"request": request}
     )
