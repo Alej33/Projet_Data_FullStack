@@ -18,3 +18,11 @@ class Book(Base) :
     desired_genre = Column(String, server_default='Surprise')
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default= text('now()'))
     image = Column(String)
+
+
+class Utilisateur(Base) :
+    __tablename__ = 'user'
+    id = Column(Integer, primary_key=True, nullable=False) # book id
+    nom = Column(String, nullable=False)
+    email = Column(String, nullable=False)
+    country = Column(String, nullable=False)

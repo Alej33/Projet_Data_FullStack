@@ -7,8 +7,8 @@ import psycopg2
 from psycopg2.extras import RealDictCursor 
 import time
 from sqlalchemy.orm import Session
-from database import engine, session, get_db, BookCreatePost
-from models import Book
+from database import engine, session, get_db
+from models import Book, Utilisateur
 import models
 import os
 from dotenv import load_dotenv
