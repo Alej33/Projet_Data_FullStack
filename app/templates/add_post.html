@@ -94,16 +94,38 @@
 
     <form method="post" id="knowledgeForm" enctype="multipart/form-data">
         <h1>Let's Share Knowledge :)</h1>
+        <input type="text" name="email" placeholder="Your email" required />
         <input type="text" name="title" placeholder="Title" required />
         <select name="genre" required>
             <option value="" disabled selected>What's the genre of your book?</option>
+            <option value="" disabled selected>Genre</option>
+            <option value="All">All genres</option>
             <option value="comedy">Comedy</option>
-            <!-- Add other genre options -->
+            <option value="romance">Romance</option>
+            <option value="drama">Drama</option>
+            <option value="action">Action</option>
+            <option value="science_fiction">Science Fiction</option>
+            <option value="thriller">Thriller</option>
+            <option value="fantasy">Fantasy</option>
+            <option value="history">History</option>
+            <option value="horror">Horror</option>
+            <option value="children_book">Children book</option>
         </select>
         <select name="desired_genre" required>
             <option value="" disabled selected>What's your desired genre?</option>
+            <option value="" disabled selected>What's the genre of your book?</option>
+            <option value="" disabled selected>Genre</option>
+            <option value="All">All genres</option>
             <option value="comedy">Comedy</option>
-            <!-- Add other genre options -->
+            <option value="romance">Romance</option>
+            <option value="drama">Drama</option>
+            <option value="action">Action</option>
+            <option value="science_fiction">Science Fiction</option>
+            <option value="thriller">Thriller</option>
+            <option value="fantasy">Fantasy</option>
+            <option value="history">History</option>
+            <option value="horror">Horror</option>
+            <option value="children_book">Children book</option>
         </select>
         <input type="text" name="country" placeholder="Country" required />
         <input type="text" name="city" placeholder="City" required />

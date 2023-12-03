@@ -9,6 +9,7 @@ class Book(Base) :
     __tablename__ = 'books'
     
     id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
+    email = Column(String, nullable=False)
     title = Column(String, nullable=False)
     genre = Column(String, nullable=False)
     country = Column(String, nullable=False)

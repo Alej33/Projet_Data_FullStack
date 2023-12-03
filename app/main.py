@@ -58,6 +58,7 @@ def redirect_post(request: Request):
 # post req for adding a post
 @app.post("/join-us/add-post")
 def form_post(request: Request, 
+              email :str = Form(...),
               title: str = Form(...),
               genre: str = Form(...),
               desired_genre : str = Form(...),
@@ -69,7 +70,8 @@ def form_post(request: Request,
 
     image_data = base64.b64encode((image.file.read())).decode("utf-8") if image else None
 
-    result = Book(title=title,
+    result = Book(email= email,
+                  title=title,
                   country=country,
                   city = city,
                   description=description,
