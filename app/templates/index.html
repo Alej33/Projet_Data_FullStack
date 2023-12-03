@@ -64,9 +64,13 @@
     .dropdown:hover .dropbtn {
       background-color: #3e8e41;
     }
+
+    /* Add this to handle the stretching animation of the contact button */
+    .dropbtn {
+      transition: height 0.5s;
+    }
   </style>
 </head>
-
 
 <body>
   <!-- Header Section -->
@@ -135,43 +139,57 @@
 
         <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Filter</button>
       </form>
+      
       {% for book in books %}
-    <div class="flex flex-wrap items-start justify-start w-full transition duration-500 ease-in-out transform bg-gray-800 border-2 border-gray-600 rounded-lg hover:border-white mb-8 shadow-md relative">
-        <div class="w-full xl:w-1/4 md:w-1/4 lg:w-1/5">
-            <div class="relative flex flex-col h-full p-8">
-                <img src="data:image/png;base64,{{ book.image }}" alt="Book Cover" style="max-width: 100%; max-height: 150px;" width="170" height="150">
-            </div>
-        </div>
-        <div class="w-full xl:w-1/2 md:w-1/2 lg:w-3/5 xl:pr-6 md:pr-6">
-            <div class="relative flex flex-col h-full p-8">
-                <h2 class="mb-4 font-semibold tracking-widest text-white uppercase text-2xl">
-                    {{ book.title }}
-                </h2>
-                <p class="mb-2 text-lg font-normal text-gray-300">
-                    Genre: {{ book.genre }}
-                </p>
-                <p class="mb-4 text-sm text-gray-400">
-                    {{ book.description }}
-                </p>
-            </div>
-        </div>
-        <div class="absolute bottom-0 right-0 mb-10 mr-14">
-          <button class="w-48 px-6 py-3 text-white font-bold transition duration-500 ease-in-out transform {% if book.availability %}bg-green-500 hover:bg-green-700{% else %}bg-red-500 hover:bg-red-700{% endif %} rounded-lg text-lg focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 focus:border-gray-700">
-            Contact owner
-        </button>
-        </div>
-        <div class="w-48 xl:w-1/4 md:w-1/4 lg:w-1/5 xl:pl-6 md:pl-6 lg:pl-4 ml-auto">
-            <div class="relative flex flex-col h-full p-8">
-                <h1 class="flex items-end text-2xl font-black leading-none text-white mb-4">
-                    <span class="timeAgo" data-created="{{ book.created_at.isoformat() }}"></span>
-                </h1>
-            </div>
-        </div>
+  <div id="postBlock{{ book.id }}" class="flex flex-wrap items-start justify-start w-full transition duration-500 ease-in-out transform bg-gray-800 border-2 border-gray-600 rounded-lg hover:border-white mb-8 shadow-md relative">
+    <div class="w-full xl:w-1/4 md:w-1/4 lg:w-1/5">
+      <div class="relative flex flex-col h-full p-8">
+        <img src="data:image/png;base64,{{ book.image }}" alt="Book Cover" style="max-width: 100%; max-height: 200px;" width="180" height="170">
+      </div>
     </div>
+    <div class="w-full xl:w-1/2 md:w-1/2 lg:w-3/5 xl:pr-6 md:pr-6">
+      <div class="relative flex flex-col h-full p-8">
+        <h2 class="mb-4 font-semibold tracking-widest text-white uppercase text-2xl">
+          {{ book.title }}
+        </h2>
+        <p class="mb-2 text-lg font-normal text-gray-300">
+          Genre: {{ book.genre }}
+        </p>
+        <p class="mb-2 text-lg font-normal text-gray-300">
+          Desired Genre: {{ book.desired_genre }}
+        </p>
+        <p class="mb-4 text-sm text-gray-400">
+          Description: {{ book.description }}
+        </p>
+
+        <!-- Write your message area and Submit button -->
+        <div class="mb-4">
+          <form onsubmit="submitMessage(event, '{{ book.id }}')">
+            <!-- Email Input -->
+            <input type="email" name="email" placeholder="Your email" class="block border rounded w-full px-4 py-3 mb-2" required>
+        
+            <!-- Message Textarea -->
+            <textarea name="message" placeholder="Write your message..." class="block border rounded w-full h-40 px-4 py-3 mb-2 resize-none" required></textarea>
+        
+            <!-- Submit Button -->
+            <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Send to owner</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-48 xl:w-1/4 md:w-1/4 lg:w-1/5 xl:pl-6 md:pl-6 lg:pl-4 ml-auto">
+      <div class="relative flex flex-col h-full p-8">
+        <h1 class="flex items-end text-2xl font-black leading-none text-white mb-4">
+          <span class="timeAgo" data-created="{{ book.created_at.isoformat() }}"></span>
+        </h1>
+      </div>
+    </div>
+  </div>
 {% endfor %}
 
-<script>
-  function convert_binary_to_base64(binaryData) {
+      <script>
+        function convert_binary_to_base64(binaryData) {
       const bytes = new Uint8Array(binaryData);
       let binary = '';
       bytes.forEach(byte => binary += String.fromCharCode(byte));
@@ -204,7 +222,37 @@
           element.textContent = 'Added : Just now';
       }
   });
-</script>
+function toggleMessageForm(bookId) {
+  var messageForm = document.getElementById('messageForm' + bookId);
+  var postBlock = document.getElementById('postBlock' + bookId);
+  var contactBtn = document.querySelector('.dropbtn');
+
+  if (messageForm.style.display === 'none' || messageForm.style.display === '') {
+    // Expand the post block
+    postBlock.style.height = postBlock.scrollHeight + 'px';
+    // Stretch the contact button
+    contactBtn.style.height = contactBtn.scrollHeight + 'px';
+  } else {
+    // Collapse the post block
+    postBlock.style.height = 'initial';
+    // Shrink the contact button
+    contactBtn.style.height = 'initial';
+  }
+
+  messageForm.style.display = (messageForm.style.display === 'block') ? 'none' : 'block';
+}
+
+function submitMessage(event, bookId) {
+  event.preventDefault();
+  var messageForm = document.getElementById('messageForm' + bookId);
+  var postBlock = document.getElementById('postBlock' + bookId);
+
+  // Collapse the post block after submission
+  postBlock.style.height = 'initial';
+
+  // Add your logic to handle the form submission (e.g., sending a message to the owner)
+}
+      </script>
 
     </div>
   </section>
