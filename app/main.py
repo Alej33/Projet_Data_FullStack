@@ -89,15 +89,23 @@ def form_post(request: Request,
     return TEMPLATES.TemplateResponse('post_added.html', context={'request': request})
 
 
-# Let's add the user's page
 @app.get("/user/{email}")
-async def show_user(request:Request, email:str):
-    query = f"SELECT * FROM messages WHERE receiver_email = '{email}'"
-    cursor.execute(query)
-    posts = cursor.fetchall()
+async def show_user(request: Request, email: str, db: Session = Depends(get_db)):
+    # Query user details based on email
+    user = db.query(models.Utilisateur).filter(models.Utilisateur.email == email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Query messages for the user
+    messages = db.query(Messages).filter(Messages.receiver_email == email).all()
+
     return TEMPLATES.TemplateResponse(
         "user.html",
-        {"request": request, "messages":posts}
+        {
+            "request": request, 
+            "user": user, 
+            "messages": messages
+        }
     )
 
 
