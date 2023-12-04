@@ -135,39 +135,6 @@ async def filter_results(request:Request,
 
 
 
-@app.get("/login")
-async def login(request:Request):
-    return TEMPLATES.TemplateResponse(
-        "login.html",
-        context={"request": request}
-    )
-
-@app.get("/register")
-async def login(request:Request):
-    return TEMPLATES.TemplateResponse(
-        "signup.html",
-        context={"request": request}
-    )
-
-
-@app.post("/{book_id}")
-def send_message(request:Request, book_id: int, email: str = Form(...), message: str = Form(...), db: Session = Depends(get_db)):
-    # Get the book's email and other details from the database
-    book = db.query(Book).filter(Book.id == book_id).first()
-
-    if not book:
-        raise HTTPException(status_code=404, detail="Book not found")
-
-    # Create a new message
-    new_message = Messages(receiver_email=book.email, sender_email=email, message=message)
-
-    # Add the message to the database
-    db.add(new_message)
-    db.commit()
-    db.refresh(new_message)
-
-    return TEMPLATES.TemplateResponse('post_added.html', context={"request":request})
-
 @app.get("/messages")
 def get_all_messages(request:Request, db: Session = Depends(get_db)):
     messages = db.query(Messages).all()
@@ -213,7 +180,26 @@ async def register_user(
 
     salt = bcrypt.gensalt()
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+    print("test")
     new_user = models.Utilisateur(email=email, nom=nom, country=country, password_hash=hashed_password, password_salt=salt)
     db.add(new_user)
     db.commit()
     return {"message": "User created successfully"}
+
+@app.post("/{book_id}")
+def send_message(request:Request, book_id: int, email: str = Form(...), message: str = Form(...), db: Session = Depends(get_db)):
+    # Get the book's email and other details from the database
+    book = db.query(Book).filter(Book.id == book_id).first()
+
+    if not book:
+        raise HTTPException(status_code=404, detail="Book not found")
+
+    # Create a new message
+    new_message = Messages(receiver_email=book.email, sender_email=email, message=message)
+
+    # Add the message to the database
+    db.add(new_message)
+    db.commit()
+    db.refresh(new_message)
+
+    return TEMPLATES.TemplateResponse('post_added.html', context={"request":request})

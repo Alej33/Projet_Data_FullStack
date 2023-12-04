@@ -32,7 +32,7 @@ class Messages(Base):
 
 class Utilisateur(Base) :
     __tablename__ = 'user'
-    id = Column(Integer, primary_key=True, nullable=False) # book id
+    id = Column(Integer, primary_key=True,autoincrement=True, nullable=False) 
     nom = Column(String, nullable=False)
     email = Column(String, nullable=False)
     country = Column(String, nullable=False)
