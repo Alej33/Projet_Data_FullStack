@@ -192,7 +192,8 @@ async def register_user(
     new_user = models.Utilisateur(email=email, nom=nom, country=country, password_hash=hashed_password, password_salt=salt)
     db.add(new_user)
     db.commit()
-    return {"message": "User created successfully"}
+    response = RedirectResponse(url=f"/user/{email}", status_code=303)
+    return response
 
 @app.post("/{book_id}")
 def send_message(request:Request, book_id: int, email: str = Form(...), message: str = Form(...), db: Session = Depends(get_db)):
