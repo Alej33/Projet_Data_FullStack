@@ -1,4 +1,4 @@
-# Projet_Data_FullStack
+# Projet Data FullStack
 
 ### Pour tester l'application, il suffit de lancer les commandes suivantes: <br/>
 
