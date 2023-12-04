@@ -2,7 +2,7 @@
 
 ### Pour tester l'application, il suffit de lancer les commandes suivantes: <br/>
 
-1. Accéder au dossier app : <br/>
+1. Accéder au dossier app et sur la branche main: <br/>
 2. Lancer la commande : docker-compose up -d <br/>
 3. Lancer la commande : uvicorn main:app --reload
 
